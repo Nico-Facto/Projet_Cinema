@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  app:
+    build: ..
+    volumes:
+      - ..:/usr/src/themoviepredictor
+    networks: 
+      - database_net  
+    #command: tail -f /dev/null  
+    depends_on: 
+      - database 
+  database:
+    image: mysql:latest
+    env_file:
+      - auth.env 
+    networks: 
+      - database_net
+    ports:
+      - 3306:3306  
+    volumes: 
+      - database_data:/var/lib/mysql
+    command: --default_authentication_plugin=mysql_native_password  
+
+  adminer: 
+    image: dehy/adminer
+    networks: 
+      - database_net
+    ports: 
+      - 8080:80  
+
+networks: 
+  database_net:
+    driver: bridge # peut être facultatif
+
+volumes: 
+  database_data:

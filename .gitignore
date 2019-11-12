@@ -1,0 +1,15 @@
+Rapport/
+.vscode/
+.ipynb_checkpoints/
+__pycache__/
+Pred_Files/
+Base_Files/
+docker/
+*.csv
+*.env
+*.pyc
+*.json
+Facto.py
+sec.py
+mypont.py
+pending.py
