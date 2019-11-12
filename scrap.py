@@ -53,7 +53,7 @@ def autoscrap():
     cnx=conectToDatabase()
     cursor =createCursor(cnx)
     
-    df = read_csv("filteredDB.csv")
+    df = read_csv("filteredDB2.csv")
 
     for newID in df["id"] :
         budl = ""

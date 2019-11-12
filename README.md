@@ -4,7 +4,6 @@ Objectif du projet :
     qu'on va soumettre à une IA dans le but de prédire le C.A mondiale d'un film
     ainsi que la note donnée par les spectateurs sur le site imdb.com une référence mondiale.
 
-Exécuter docker-compose up -d depuis le dossier themoviepredicator
 
 Se connecter à la base de donées : http://localhost:8080/
 importer dans la base de donée le fichier : TheMoviesPredicator_mysql_create.sql
@@ -17,9 +16,7 @@ avec le contenu suivant :
         sqlLogMovie="your_logs"
 Creer un fichier auth.env, avec vos logs mysql        
 
-Pour ajouter un film à la BD :
-    docker-compose exec app bash
-    python scrap.py movies scrap yes
+Exécuter docker-compose up -d depuis le dossier themoviepredicator
 
 
 Pour automatiser la tâche, vous pouvez utiliser la class Pending présente dans le script class_sql.py
