@@ -20,7 +20,7 @@ def voidUpdate() :
 
     \t3: Demander prediction             \t4: Analyse statistique 
     
-    \t5: Scrap             \t6: Interagir avec la base de données
+    \t5: Scrap                          \t6: Base de données
 
                     \t9: Terminer
                         """
@@ -44,7 +44,7 @@ def voidUpdate() :
             elif option_choisie == 5:
                 askScrap() 
             elif option_choisie == 6:
-                print("Travail en cours")                            
+                askBdd()                            
             elif option_choisie == leave_values :
                 endsParty()  
                     
@@ -71,6 +71,9 @@ def askAnalyse():
 
 def askScrap():
     import scrap
+
+def askBdd():
+    import app    
   
 voidUpdate()    
 

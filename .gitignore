@@ -1,15 +1,11 @@
-Rapport/
 .vscode/
 .ipynb_checkpoints/
 __pycache__/
-Pred_Files/
-Base_Files/
-docker/
 *.csv
 *.env
 *.pyc
 *.json
+*.ipynb
 sec.py
 mypont.py
-*.ipynb
 ui.py

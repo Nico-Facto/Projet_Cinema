@@ -55,9 +55,8 @@ def predmeth1Kagg (c_condition,objectifField,mod,file,fileTest,export) :
     modvar = modelOperate(mod,origin_dataset)
 
     print("predict-lancée")
+    
     batch_prediction = api.create_batch_prediction(modvar, test_testdataset,{"all_fields" : True,"probabilities" : True})
-    api.ok
-    print("wait")
     api.ok(batch_prediction)
 
     # evaluation = api.create_evaluation(modvar,fileTest)

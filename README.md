@@ -5,9 +5,6 @@ Objectif du projet :
     sur le site imdb.com une référence mondiale.
 
 
-Se connecter à la base de donées : http://localhost:8080/
-importer dans la base de donée le fichier : TheMoviesPredicator_mysql_create.sql
-
 Pour les logs crée un fichier sec.py à la racine du projet
 avec le contenu suivant :
 
@@ -19,9 +16,17 @@ avec le contenu suivant :
         pjt_id ="project/your_id"
         bigUseur = 'your_useur name'
         bigApiKey = 'Api key'
-       
+
+
+Se connecter à la base de donées : http://localhost:8080/
+importer dans la base de donée le fichier : TheMoviesPredicator_mysql_create.sql
+
+
 Exécuter docker-compose up -d depuis le dossier themoviepredicator
+
+
 docker-compose exec app bash depuis le dossier themoviepredicator
+
 python facto.py
 
 fonction import ouverte à toutes les tables :
