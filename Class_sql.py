@@ -32,8 +32,11 @@ class pending() :
 
     def __init__(self):
 
+        self.count = 0
+
         def job():
             print("I'm working...")
+            self.count += 1
 
         self.schedule.every(10).seconds.do(job)
         #self.schedule.every().hour.do(job)
@@ -41,12 +44,16 @@ class pending() :
         #self.schedule.every().monday.do(job)
         #self.schedule.every().tuesday.at("10:00").do(job)
         #self.schedule.every().minute.at(":17").do(job)
-        while True:
+        # while True:
+        #     self.schedule.run_pending()
+        #     self.time.sleep(1) 
+
+        while self.count < 5:
             self.schedule.run_pending()
             self.time.sleep(1)
-        else : 
-            print("finish job")
-            exit()    
+
+        print('Go to close')
+        exit()        
     
     
 

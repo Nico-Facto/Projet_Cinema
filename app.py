@@ -7,7 +7,6 @@ import csv
 from sec import secureLog as SL
 
 
-
 modechoice = input("1 pour une execution manuelle, 0 pour une excecution automatique cmd :")
 modechoice = int(modechoice)
 print(f"Mode selec : {modechoice}")
@@ -89,7 +88,6 @@ elif modechoice >=1:
         extractMode = False
         print("pas d'argument export")
             
-
 
 
 idee = SL.sqlLogMovie

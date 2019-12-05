@@ -7,13 +7,16 @@ services:
       - ..:/usr/src/themoviepredictor
     networks: 
       - database_net  
-    #command: tail -f /dev/null  
+    command: tail -f /dev/null  
     depends_on: 
       - database 
   database:
     image: mysql:latest
-    env_file:
-      - auth.env 
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=predictor
+      - MYSQL_PASSWORD=predictor
+      - MYSQL_DATABASE=predictor
     networks: 
       - database_net
     ports:
