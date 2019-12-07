@@ -5,7 +5,9 @@ __pycache__/
 *.env
 *.pyc
 *.json
-*.ipynb
 sec.py
 mypont.py
 ui.py
+neur.py
+Neuron.ipynb
+scki.ipynb

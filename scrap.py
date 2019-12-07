@@ -9,28 +9,12 @@ from sec import secureLog as SL
 # import isodate
 
 
-# locale.setlocale(locale.LC_ALL, 'en_US') # Anglais 'en_GB' ou 'en_US'
+locale.setlocale(locale.LC_ALL, 'en_US') # Anglais 'en_GB' ou 'en_US'
 
-# parser = argparse.ArgumentParser(description="Process movie predictor data")
-
-# parser.add_argument('context', choices=['movies'])
-
-# subparsers = parser.add_subparsers(dest='Action',required=True)
-
-# parser_scrap = subparsers.add_parser("scrap")
-# parser_scrap.add_argument('gobase', help= "yes ou no pour un envoi vers la base de donnée")
-
-
-# args = parser.parse_args() 
-# print(args)
 
 goToDataBase = True
 idee = SL.sqlLogMovie
 
-# if args.gobase == "yes"  :
-#     goToDataBase = True
-# else :
-#     goToDataBase = False  
 
 def conectToDatabase():
     return mysql.connector.connect(user=f'{idee}', password=f'{idee}', host='database', database=f'{idee}')
@@ -53,8 +37,9 @@ def autoscrap():
     cnx=conectToDatabase()
     cursor =createCursor(cnx)
     
-    df = read_csv("filteredDB.csv")
+    df = read_csv("DataPip/filteredDB.csv")
     print("Scrap vers Base")
+
     for newID in df["id"] :
         budl = ""
         boxoffice = ""
@@ -68,6 +53,15 @@ def autoscrap():
 
             titleO = soup.find(class_='title_wrapper').find('h1').get_text().split("(")[0] # id est unique sur la page
             titleUn = titleO.replace("\xa0","")
+
+            cursor.execute(f"SELECT*FROM movies WHERE title='{titleUn}'")
+            results = cursor.fetchall()
+            if len(results) > 0 :
+                print("sort de la boucle")
+                continue
+            else :
+                print("champs libre")
+
 
             duration = soup.find(class_="subtext").find('time').get_text().strip()
             vartime = datetime.strptime(duration,'%Hh %Mmin')
@@ -151,7 +145,7 @@ def scrapOnPred() :
     cnx=conectToDatabase()
     cursor =createCursor(cnx)
     
-    df = read_csv("id_movies_ic.csv")
+    df = read_csv("DataPip/id_movies_ic.csv")
     print("Scrap vers Pred")
     for newID in df["id"] :
         budl = 0
@@ -232,12 +226,45 @@ def scrapOnPred() :
     closeCursor(cnx)
     disconectToDatabase(cnx)
 
-mod = (int(input("0 pour Scrap base, 1 pour Scrap pred : ")))
+
+def scrapOnTarget():
+    cnx=conectToDatabase()
+    cursor =createCursor(cnx)
+    
+    df = read_csv("Pred_Files/ml_ensemble1.csv")
+    print("Scrap vers Target")
+    for newID in df["imdb_id"] :
+    
+        imdb_id = str(newID)
+
+        
+        r = requests.get(f"https://www.imdb.com/title/{newID}", headers={"Accept-language" : "fr-fr"})
+        print(r) # doit retourné rep 200 pour ok
+        print(f"{newID}")
+        soup = BeautifulSoup(r.text, "html.parser")
+
+        try :
+            target = soup.find(class_="ratingValue").find_next("span").text
+            target = target.replace(",",".")
+            print(target)
+        except :
+            target = 0
+            print(target)    
+
+        cursor.execute(f"UPDATE inc_movies SET target = {target} WHERE imdb_id = ('{imdb_id}')")
+        cnx.commit()
+        print("Import dans la BD ok")
+
+
+
+
+mod = (int(input("0 pour Scrap base, 1 pour Scrap pred, 2 Scrap target : ")))
 if mod == 0:
     autoscrap()
-else:
-    scrapOnPred()  
-
+elif mod == 1 :
+    scrapOnPred()
+elif mod == 2 :
+    scrapOnTarget()     
 
 print("Programme terminé !! ")
 exit()

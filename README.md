@@ -29,7 +29,7 @@ docker-compose exec app bash depuis le dossier themoviepredicator
 
 python facto.py
 
-fonction import ouverte à toutes les tables :
+fonction import de csv dans la base de donée ouverte à toutes les tables :
 
     ###### Supprimer la colonne ID si présente sur le CSV à importer, dans le cas d'un auto incré,
     sinon c'est elle la premiére colonne a renseigner######
@@ -39,3 +39,8 @@ fonction import ouverte à toutes les tables :
     ######  Cette fonction, est ok uniquement si on autorise les valeurs NULL depuis adminer
     ######  sur TOUTES les col sauf la premiére qu'on renseigne + la col ID si auto increment                
        
+-----   v0.02a :
+
+ajout d'une fonction de scrap pour le suivi de la note pour suivre la tendance
+de nos predictions.
+
