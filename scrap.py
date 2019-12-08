@@ -97,8 +97,7 @@ def autoscrap():
             except :
                 print("budgetfailed")
                               
-
-
+                              
             director = soup.find(class_="plot_summary").find("a").get_text()
 
             token = SL.token
@@ -112,7 +111,7 @@ def autoscrap():
             vprod = response_json['Production']
             vgenre = response_json['Genre']
             
-
+            # vcontry = response_json['Country']
 
             note = soup.find(class_="ratingValue").find_next("span").text
             note = note.replace(",",".")
@@ -127,7 +126,7 @@ def autoscrap():
 
             if goToDataBase :
                 try :
-                    cursor.execute(f"INSERT INTO movies (title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,note,box_office) VALUES {vals}")
+                    cursor.execute(f"INSERT INTO movies (title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,target,box_office) VALUES {vals}")
                     cnx.commit()
                     print(vals)
                     print("Import dans la BD ok")
@@ -267,4 +266,3 @@ elif mod == 2 :
     scrapOnTarget()     
 
 print("Programme terminé !! ")
-exit()
