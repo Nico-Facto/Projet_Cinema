@@ -44,3 +44,6 @@ fonction import de csv dans la base de donée ouverte à toutes les tables :
 ajout d'une fonction de scrap pour le suivi de la note pour suivre la tendance
 de nos predictions.
 
+-----   v0.03a :
+
+Creation d'un modéle sklearn, notbook = 3-sic
