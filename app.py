@@ -386,7 +386,12 @@ def voidUpdate() :
                         exctraction(results)
                         args.export = None
                     except : 
-                        print("Extraction Impossible")             
+                        print("Extraction Impossible")
+            # elif option_choisie == 7 :
+            #     filemane = input("Nom du fichier avec extention :")
+            #     firstcol = str(input("Nom de la première colonne : "))
+            #     firstcase = str(input("Nom de la première case :"))
+            #     import_csv(filemane,firstcol,firstcase)                         
     if modechoice == 0 :
          cmdExecut()
            

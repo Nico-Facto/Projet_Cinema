@@ -6,6 +6,7 @@ import os
 import matplotlib.pyplot as plt
 import sys
 from bigml.api import BigML
+from bigml.model import Model
 from graph import rViz
 from sec import secureLog as SL
 
@@ -37,22 +38,23 @@ def predmeth1(file,fileTest,splitTrain,splitTest,mod,objectifField,export) :
 
 ################ Prediction sur fichier prod ###################
 
-def predmeth1Kagg (c_condition,objectifField,mod,file,fileTest,export) :
+def predmeth1Kagg (objectifField,mod,modid,fileTest,export) :
 
     source_test = api.create_source(fileTest)
     api.ok
 
-    source = api.get_dataset(file)
-    api.ok
-
-    origin_dataset = api.create_dataset(source)
-    api.ok
     test_testdataset = api.create_dataset(source_test)
     api.ok
 
+    # source = api.get_dataset(file)
+    # api.ok
+
+    # origin_dataset = api.create_dataset(source)
+    # api.ok
     print("fichier ok")
 
-    modvar = modelOperate(mod,origin_dataset)
+    modvar = getModel(modid,mod)
+    api.ok(modvar)
     print("predict-lancée")
     
     batch_prediction = api.create_batch_prediction(modvar, test_testdataset,{"all_fields" : True,"probabilities" : True})
@@ -157,22 +159,15 @@ class createNewPred() :
 
     @staticmethod
     def predOnProdSet() :
-        
-        c_condition = bool(input("Creer une nouvelle source full train (true or false) ?"))
-        print(c_condition)
-        if c_condition:
-            file = str(input("Nom du fichier full train : "))
-            fileTest = str(input("Nom du fichier full Prod : "))
-        else:    
-            s_source = str(input("train full dataset/id : "))
-            file = s_source
-            fileTest = str(input("Nom du fichier full Prod : "))
+        fileTest = str(input("Nom du fichier full Prod : "))
 
-        mod = str(input("Model selectioné : "))
+        mod = str(input("Type de modèle : "))
+        modid = str(input("Modèle id : "))
+
         objectifField = str(input("Nom du champs objectif : "))
         export = str(input("Nom du fichier exporté : "))
 
-        predmeth1Kagg(c_condition,objectifField,mod,file,fileTest,export)
+        predmeth1Kagg(objectifField,mod,modid,fileTest,export)
 
 ##################### Meth pour split les full test en dev test et test_test(genre kaggle) ##############################
 
@@ -254,5 +249,18 @@ class analyserML() :
         plt.draw()
         plt.show()
 
+class sinlePredProd() :
 
-    
+    @staticmethod
+    def singlePred(model,vals1,vals2):
+
+        input_data = {"features1": vals1, "features2": vals2}
+        prediction = api.create_prediction(model, input_data)
+        print("prediction : %s, confidence: %s %",(prediction["object"]["output"],prediction["object"]["confidence"] ))    
+
+    @staticmethod
+    def localSinglePred(model,vals1,vals2):
+
+        input_data2 = {"features1": vals1, "features2": vals2}
+        local_model = Model(model)# model Id
+        local_model.predict(input_data2) # add_confidence=True)

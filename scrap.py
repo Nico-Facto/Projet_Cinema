@@ -41,9 +41,11 @@ def autoscrap():
     print("Scrap vers Base")
 
     for newID in df["id"] :
-        budl = ""
+        budl = 0
         boxoffice = ""
         vactors = ""
+
+        imdb_id = str(newID)
 
         try :
             r = requests.get(f"https://www.imdb.com/title/{newID}", headers={"Accept-language" : "fr-fr"})
@@ -53,15 +55,6 @@ def autoscrap():
 
             titleO = soup.find(class_='title_wrapper').find('h1').get_text().split("(")[0] # id est unique sur la page
             titleUn = titleO.replace("\xa0","")
-
-            cursor.execute(f"SELECT*FROM movies WHERE title='{titleUn}'")
-            results = cursor.fetchall()
-            if len(results) > 0 :
-                print("sort de la boucle")
-                continue
-            else :
-                print("champs libre")
-
 
             duration = soup.find(class_="subtext").find('time').get_text().strip()
             vartime = datetime.strptime(duration,'%Hh %Mmin')
@@ -95,10 +88,11 @@ def autoscrap():
                         bud = frt.replace(",","")
                         budl = int(bud)
             except :
+                budl = 0
                 print("budgetfailed")
                               
                               
-            director = soup.find(class_="plot_summary").find("a").get_text()
+            # director = soup.find(class_="plot_summary").find("a").get_text()
 
             token = SL.token
             url2 = f"http://www.omdbapi.com/?i={newID}&apikey={token}&imdbID={newID}"
@@ -110,8 +104,9 @@ def autoscrap():
             vplots = response_json['Plot']
             vprod = response_json['Production']
             vgenre = response_json['Genre']
-            
-            # vcontry = response_json['Country']
+            director = response_json['Director']
+            vcontry = response_json['Country']
+            vwriter = response_json['Writer']
 
             note = soup.find(class_="ratingValue").find_next("span").text
             note = note.replace(",",".")
@@ -122,11 +117,11 @@ def autoscrap():
                     box = frt.replace(",","")
                     boxoffice = int(box)
 
-            vals = titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vactors,vprod,note,boxoffice
+            vals = imdb_id,titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vactors,vprod,vwriter,vcontry,note,boxoffice
 
             if goToDataBase :
                 try :
-                    cursor.execute(f"INSERT INTO movies (title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,target,box_office) VALUES {vals}")
+                    cursor.execute(f"INSERT INTO movies (imdb_id,title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,writer,country,target,box_office) VALUES {vals}")
                     cnx.commit()
                     print(vals)
                     print("Import dans la BD ok")
@@ -152,7 +147,6 @@ def scrapOnPred() :
     
         imdb_id = str(newID)
 
-        
         r = requests.get(f"https://www.imdb.com/title/{newID}", headers={"Accept-language" : "fr-fr"})
         print(r) # doit retourné rep 200 pour ok
         print(f"{newID}")
@@ -195,10 +189,6 @@ def scrapOnPred() :
         except :
             print("budgetfailed")
                             
-
-
-        director = soup.find(class_="plot_summary").find("a").get_text()
-
         token = SL.token
         url2 = f"http://www.omdbapi.com/?i={newID}&apikey={token}&imdbID={newID}"
         response= requests.get(url2)
@@ -209,13 +199,15 @@ def scrapOnPred() :
         vplots = response_json['Plot']
         vprod = response_json['Production']
         vgenre = response_json['Genre']
-        
+        director = response_json['Director']
+        vcontry = response_json['Country']
+    
 
-        vals = imdb_id,titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vactors,vprod
+        vals = imdb_id,titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vcontry,vactors,vprod
 
         if goToDataBase :
         
-            cursor.execute(f"INSERT INTO inc_movies (imdb_id,title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur) VALUES {vals}")
+            cursor.execute(f"INSERT INTO inc_movies (imdb_id,title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,country) VALUES {vals}")
             cnx.commit()
             print(vals)
             print("Import dans la BD ok")
@@ -224,7 +216,6 @@ def scrapOnPred() :
 
     closeCursor(cnx)
     disconectToDatabase(cnx)
-
 
 def scrapOnTarget():
     cnx=conectToDatabase()
@@ -253,16 +244,16 @@ def scrapOnTarget():
         cursor.execute(f"UPDATE inc_movies SET target = {target} WHERE imdb_id = ('{imdb_id}')")
         cnx.commit()
         print("Import dans la BD ok")
-
-
-
-
+    closeCursor(cnx)
+    disconectToDatabase(cnx)
+  
 mod = (int(input("0 pour Scrap base, 1 pour Scrap pred, 2 Scrap target : ")))
 if mod == 0:
     autoscrap()
 elif mod == 1 :
     scrapOnPred()
 elif mod == 2 :
-    scrapOnTarget()     
+    scrapOnTarget()
+       
 
 print("Programme terminé !! ")
