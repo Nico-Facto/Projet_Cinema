@@ -9,8 +9,8 @@ Pour les logs crée un fichier sec.py à la racine du projet
 avec le contenu suivant :
 
     class secureLog():
-        token="your_token"
-        sqlLogMovie="your_logs"
+        token="your_token_Api_omdb"
+        sqlLogMovie="your_logs_sql"
 
         # Pour BIGML
         pjt_id ="project/your_id"
@@ -47,3 +47,8 @@ de nos predictions.
 -----   v0.03a :
 
 Creation d'un modéle sklearn, notebook = 3-sic
+
+-----   v0.10a :
+
+Ajout d'un logiciel pour demander une prédiction 
+Exécuter python uiDesign.py

@@ -9,4 +9,5 @@ sec.py
 mypont.py
 uiDesign/
 Neuron.ipynb
-MoviesPredictorV2.sql
+Class_sql.py
+TheMoviesPredicator_mysql_create.sql
