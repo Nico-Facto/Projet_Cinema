@@ -23,7 +23,7 @@ def predmeth1(file,fileTest,splitTrain,splitTest,mod,objectifField,export) :
     api.ok(modvar)
     print("predict-lancée")    
 
-    batch_prediction = api.create_batch_prediction(modvar, fileTest,{"all_fields": True,"probabilities": True})
+    batch_prediction = api.create_batch_prediction(modvar, fileTest,{"all_fields": True,"probabilities": True, "prediction_name" : "pred"})
     api.ok(batch_prediction)
 
     evaluation = api.create_evaluation(modvar,fileTest) 
@@ -38,7 +38,7 @@ def predmeth1(file,fileTest,splitTrain,splitTest,mod,objectifField,export) :
 
 ################ Prediction sur fichier prod ###################
 
-def predmeth1Kagg (objectifField,mod,modid,fileTest,export) :
+def predmeth1Kagg (mod,modid,fileTest,export) :
 
     source_test = api.create_source(fileTest)
     api.ok
@@ -57,7 +57,7 @@ def predmeth1Kagg (objectifField,mod,modid,fileTest,export) :
     api.ok(modvar)
     print("predict-lancée")
     
-    batch_prediction = api.create_batch_prediction(modvar, test_testdataset,{"all_fields" : True,"probabilities" : True})
+    batch_prediction = api.create_batch_prediction(modvar, test_testdataset,{"all_fields" : True,"probabilities" : True, "prediction_name" : "pred"})
     api.ok(batch_prediction)
 
     # evaluation = api.create_evaluation(modvar,fileTest)
@@ -70,13 +70,13 @@ def predmeth1Kagg (objectifField,mod,modid,fileTest,export) :
 
 def modelOperate(mod,train_dataset) :
     if mod == 'ensemble':
-        modvar = api.create_ensemble(train_dataset, {"objective_field": "target","name": "ensemble"}) 
+        modvar = api.create_ensemble(train_dataset, {"objective_field": "target","name": "ensemble","prediction_name" : "pred"}) 
     elif mod == 'model':
-        modvar = api.create_model(train_dataset, {"objective_field": "target","name": "model"})
+        modvar = api.create_model(train_dataset, {"objective_field": "target","name": "model","prediction_name" : "pred"})
     elif mod == 'deepnet': 
-        modvar = api.create_deepnet(train_dataset, {"objective_field": "target","name": "deepnet"}) 
+        modvar = api.create_deepnet(train_dataset, {"objective_field": "target","name": "deepnet","prediction_name" : "pred"}) 
     elif mod == 'linear': 
-        modvar = api.create_linear_regression(train_dataset, {"objective_field": "target","name": "linear"})      
+        modvar = api.create_linear_regression(train_dataset, {"objective_field": "target","name": "linear","prediction_name" : "pred"})      
     else :
         print("mod non pris en charge ! programme terminé !!")
         exit()
@@ -164,10 +164,9 @@ class createNewPred() :
         mod = str(input("Type de modèle : "))
         modid = str(input("Modèle id : "))
 
-        objectifField = str(input("Nom du champs objectif : "))
         export = str(input("Nom du fichier exporté : "))
 
-        predmeth1Kagg(objectifField,mod,modid,fileTest,export)
+        predmeth1Kagg(mod,modid,fileTest,export)
 
 ##################### Meth pour split les full test en dev test et test_test(genre kaggle) ##############################
 
@@ -249,14 +248,24 @@ class analyserML() :
         plt.draw()
         plt.show()
 
-class sinlePredProd() :
+class singlePredProd() :
 
     @staticmethod
-    def singlePred(model,vals1,vals2):
+    def singlePred(model_id,model_types,array_imput):
+        print("call5")
+        model = getModel(model_id,model_types)
+        api.ok(model)
+        print("call6")
+        input_data = {"title": array_imput[0], "synopsis": array_imput[1], "rating": array_imput[2], "genre": array_imput[3], "duration": array_imput[4],
+        "release_date": array_imput[5], "director": array_imput[6],"people": array_imput[7], "produceur": array_imput[8],"country": array_imput[9], 
+        "writer": array_imput[10]}
 
-        input_data = {"features1": vals1, "features2": vals2}
         prediction = api.create_prediction(model, input_data)
-        print("prediction : %s, confidence: %s %",(prediction["object"]["output"],prediction["object"]["confidence"] ))    
+        print("call7")
+        api.ok(prediction)
+        value_pred = prediction["object"]["output"]
+        return value_pred
+        #print("prediction : %s, confidence: %s %",(prediction["object"]["output"],prediction["object"]["confidence"] ))    
 
     @staticmethod
     def localSinglePred(model,vals1,vals2):

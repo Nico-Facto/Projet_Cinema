@@ -46,4 +46,4 @@ de nos predictions.
 
 -----   v0.03a :
 
-Creation d'un modéle sklearn, notbook = 3-sic
+Creation d'un modéle sklearn, notebook = 3-sic

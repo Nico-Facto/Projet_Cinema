@@ -201,13 +201,13 @@ def scrapOnPred() :
         vgenre = response_json['Genre']
         director = response_json['Director']
         vcontry = response_json['Country']
-    
+        vwriter = response_json['Writer']
 
-        vals = imdb_id,titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vcontry,vactors,vprod
+        vals = imdb_id,titleUn,durtime,vplots,vgenre,rdo_sql,rating,budl,director,vcontry,vactors,vprod,vwriter
 
         if goToDataBase :
         
-            cursor.execute(f"INSERT INTO inc_movies (imdb_id,title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,country) VALUES {vals}")
+            cursor.execute(f"INSERT INTO inc_movies (imdb_id,title,duration,synopsis,genre,release_date,rating,prod_budget,director,people,produceur,country,writer) VALUES {vals}")
             cnx.commit()
             print(vals)
             print("Import dans la BD ok")
