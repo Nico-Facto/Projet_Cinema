@@ -38,7 +38,7 @@ def predmeth1(file,fileTest,splitTrain,splitTest,mod,objectifField,export) :
 
 ################ Prediction sur fichier prod ###################
 
-def predmeth1Kagg (mod,modid,fileTest,export) :
+def predmeth1Kagg (modid,fileTest,export) :
 
     source_test = api.create_source(fileTest)
     api.ok
@@ -53,7 +53,7 @@ def predmeth1Kagg (mod,modid,fileTest,export) :
     # api.ok
     print("fichier ok")
 
-    modvar = getModel(modid,mod)
+    modvar = api.get_model(modid)
     api.ok(modvar)
     print("predict-lancée")
     
@@ -160,13 +160,10 @@ class createNewPred() :
     @staticmethod
     def predOnProdSet() :
         fileTest = str(input("Nom du fichier full Prod : "))
-
-        mod = str(input("Type de modèle : "))
         modid = str(input("Modèle id : "))
-
         export = str(input("Nom du fichier exporté : "))
 
-        predmeth1Kagg(mod,modid,fileTest,export)
+        predmeth1Kagg(modid,fileTest,export)
 
 ##################### Meth pour split les full test en dev test et test_test(genre kaggle) ##############################
 
@@ -251,17 +248,17 @@ class analyserML() :
 class singlePredProd() :
 
     @staticmethod
-    def singlePred(model_id,model_types,array_imput):
-        print("call5")
-        model = getModel(model_id,model_types)
+    def singlePred(model_id,array_imput):
+
+        model = api.get_model(model_id)
         api.ok(model)
-        print("call6")
+
         input_data = {"title": array_imput[0], "synopsis": array_imput[1], "rating": array_imput[2], "genre": array_imput[3], "duration": array_imput[4],
         "release_date": array_imput[5], "director": array_imput[6],"people": array_imput[7], "produceur": array_imput[8],"country": array_imput[9], 
         "writer": array_imput[10]}
 
         prediction = api.create_prediction(model, input_data)
-        print("call7")
+
         api.ok(prediction)
         value_pred = prediction["object"]["output"]
         return value_pred

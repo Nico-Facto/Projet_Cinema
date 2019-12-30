@@ -6,6 +6,7 @@ import ress_rc
 
 
 class Ui_MoviesPredictor(object):
+    
     def setupUi(self, MoviesPredictor):
         MoviesPredictor.setObjectName("MoviesPredictor")
         MoviesPredictor.resize(954, 819)
@@ -39,7 +40,7 @@ class Ui_MoviesPredictor(object):
         font.setWeight(50)
         self.PredButton.setFont(font)
         self.PredButton.setStyleSheet("font: 14pt \"Cooper Black\";\n"
-"text-decoration: underline;")
+        "text-decoration: underline;")
         self.PredButton.setObjectName("PredButton")
         self.Result = QtWidgets.QLabel(MoviesPredictor)
         self.Result.setGeometry(QtCore.QRect(600, 140, 211, 171))
@@ -95,10 +96,10 @@ class Ui_MoviesPredictor(object):
         self.PredButton.setText(_translate("MoviesPredictor", "Make Prediction"))
         self.Result.setText(_translate("MoviesPredictor", "0.5"))
         self.Title.setHtml(_translate("MoviesPredictor", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Cooper Black\'; font-size:20pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/logo/10501.png\" /></p></body></html>"))
+        "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+        "p, li { white-space: pre-wrap; }\n"
+        "</style></head><body style=\" font-family:\'Cooper Black\'; font-size:20pt; font-weight:400; font-style:normal;\">\n"
+        "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/logo/10501.png\" /></p></body></html>"))
         self.lineEdit_3.setText(_translate("MoviesPredictor", "Enter Title"))
         self.lineEdit_2.setText(_translate("MoviesPredictor", "Enter Synopsis"))
         self.lineEdit.setText(_translate("MoviesPredictor", "Enter Rating"))
@@ -112,13 +113,13 @@ class Ui_MoviesPredictor(object):
         self.Result.setText(_translate("MoviesPredictor", "Working on prediction"))
         from biglearn import singlePredProd as SP
         
-        model_id = "ensemble/5e09284359f5c30cc1000c13"
-        model_types = "ensemble"
+        model_id = "model/5e09292b3514cd286f01ece4"
+
         array_to_send = [self.lineEdit_3.text(),self.lineEdit_2.text(),self.lineEdit.text(),self.lineEdit_4.text(),self.lineEdit_5.text(),
                          self.lineEdit_6.text(),self.lineEdit_7.text(),self.lineEdit_8.text(),self.lineEdit_9.text(),self.lineEdit_10.text(),
                          self.lineEdit_11.text()]
 
-        pred_value = SP.singlePred(model_id,model_types,array_to_send)
+        pred_value = SP.singlePred(model_id,array_to_send)
 
         self.Result.setText(_translate("MoviesPredictor", f"{round(pred_value,2)}"))
 
