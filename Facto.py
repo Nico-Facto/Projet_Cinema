@@ -62,7 +62,7 @@ def askTrain():
     CP.loaddDataSet()
 
 def askPred():
-    CP.predOnProdSet() 
+    import uiDesign
 
 def askAnalyse():
     df = input(str("Nom du fichier pred + .csv : "))

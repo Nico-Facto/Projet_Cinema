@@ -52,3 +52,9 @@ Creation d'un modéle sklearn, notebook = 3-sic
 
 Ajout d'un logiciel pour demander une prédiction 
 Exécuter python uiDesign.py
+
+-----   v0.15a :
+
+Ajout fontionalitée prediction multiple
+Upgrade de l'interface de l'app
+Exécuter python uiDesign.py
