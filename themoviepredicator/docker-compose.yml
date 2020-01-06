@@ -1,15 +1,15 @@
 version: "3.7"
 
 services:
-  app:
-    build: ..
-    volumes:
-      - ..:/usr/src/themoviepredictor
-    networks: 
-      - database_net  
-    command: tail -f /dev/null  
-    depends_on: 
-      - database 
+  # app:      # pour activer bash et mettre host = 'database' dans app.py ou autre script en lien avec la bdd
+  #   build: ..
+  #   volumes:
+  #     - ..:/usr/src/themoviepredictor
+  #   networks: 
+  #     - database_net  
+  #   command: tail -f /dev/null  
+  #   depends_on: 
+  #     - database 
   database:
     image: mysql:latest
     environment:
