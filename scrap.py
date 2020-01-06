@@ -44,8 +44,16 @@ def autoscrap():
         budl = 0
         boxoffice = ""
         vactors = ""
+        verif = None
 
         imdb_id = str(newID)
+
+        cursor.execute(f"SELECT * FROM movies WHERE imdb_id = '{imdb_id}'")
+        verif = cursor.fetchall()
+    
+        if len(verif) >= 1:
+            print("Film déjà dans la bdd")
+            continue
 
         try :
             r = requests.get(f"https://www.imdb.com/title/{newID}", headers={"Accept-language" : "fr-fr"})
@@ -141,11 +149,19 @@ def scrapOnPred() :
     
     df = read_csv("DataPip/id_movies_ic.csv")
     print("Scrap vers Pred")
+
     for newID in df["id"] :
         budl = 0
         vactors = ""
     
         imdb_id = str(newID)
+
+        cursor.execute(f"SELECT * FROM inc_movies WHERE imdb_id = '{imdb_id}'")
+        verif = cursor.fetchall()
+    
+        if len(verif) >= 1:
+            print("Film déjà dans la bdd")
+            continue
 
         r = requests.get(f"https://www.imdb.com/title/{newID}", headers={"Accept-language" : "fr-fr"})
         print(r) # doit retourné rep 200 pour ok
@@ -188,6 +204,7 @@ def scrapOnPred() :
                         bud = frt.replace(",","")
                         budl = int(bud)
             except :
+                budl = 0
                 print("budgetfailed")
                                 
             token = SL.token
@@ -225,6 +242,7 @@ def scrapOnTarget():
     
     df = read_csv("Pred_Files/suivi_mod_janv.csv")
     print("Scrap vers Target")
+
     for newID in df["imdb_id"] :
     
         imdb_id = str(newID)
@@ -245,7 +263,8 @@ def scrapOnTarget():
 
         cursor.execute(f"UPDATE inc_movies SET target = {target} WHERE imdb_id = ('{imdb_id}')")
         cnx.commit()
-        print("Import dans la BD ok")    
+        print("Import dans la BD ok")
+            
     closeCursor(cnx)
     disconectToDatabase(cnx)
   
