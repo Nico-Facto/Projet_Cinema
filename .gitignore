@@ -6,6 +6,7 @@ __pycache__/
 *.pyc
 *.json
 sec.py
+azure.py
 mypont.py
 uiDesign/
 Neuron.ipynb

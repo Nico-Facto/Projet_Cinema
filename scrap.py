@@ -17,7 +17,7 @@ idee = SL.sqlLogMovie
 
 
 def conectToDatabase():
-    return mysql.connector.connect(user=f'{idee}', password=f'{idee}', host='database', database=f'{idee}')
+    return mysql.connector.connect(user=f'{idee}', password=f'{idee}', host='127.0.0.1', database=f'{idee}')
 
 conectToDatabase()
 
