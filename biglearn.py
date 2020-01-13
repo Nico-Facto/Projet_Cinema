@@ -19,7 +19,7 @@ api = initproject()
 
 def predmeth1(file,fileTest,splitTrain,splitTest,mod,objectifField,export) :
 
-    modvar = modelOperate(mod,file) 
+    modvar = modelOperate(mod,file,objectifField) 
     api.ok(modvar)
     print("predict-lancée")    
 
@@ -63,15 +63,15 @@ def predmeth1Kagg (modid,modTypes,fileTest,export) :
     
 ########### Gestion du script #####################
 
-def modelOperate(mod,train_dataset) :
+def modelOperate(mod,train_dataset,objectifField) :
     if mod == 'ensemble':
-        modvar = api.create_ensemble(train_dataset, {"objective_field": "target","name": "ensemble","prediction_name" : "pred"}) 
+        modvar = api.create_ensemble(train_dataset, {"objective_field": f"{objectifField}", "name": "ensemble"}) 
     elif mod == 'model':
-        modvar = api.create_model(train_dataset, {"objective_field": "target","name": "model","prediction_name" : "pred"})
+        modvar = api.create_model(train_dataset, {"objective_field": f"{objectifField}", "name": "model"})
     elif mod == 'deepnet': 
-        modvar = api.create_deepnet(train_dataset, {"objective_field": "target","name": "deepnet","prediction_name" : "pred"}) 
+        modvar = api.create_deepnet(train_dataset, {"objective_field": f"{objectifField}", "name": "deepnet"}) 
     elif mod == 'linear': 
-        modvar = api.create_linear_regression(train_dataset, {"objective_field": "target","name": "linear","prediction_name" : "pred"})      
+        modvar = api.create_linear_regression(train_dataset, {"objective_field": f"{objectifField}" ,"name": "linear"})      
     else :
         print("mod non pris en charge ! programme terminé !!")
         exit()
@@ -100,7 +100,7 @@ class createNewPred() :
 
         file = str(input("Nom du fichier full train : "))
         splitTrain = float(input("valeur split train : "))
-        splitTest = float(input("valeur split test : "))
+        splitTest = float(1 - splitTrain)
         mod = str(input("Model selectioné : "))
         objectifField = str(input("Nom du champs objectif : "))
         export = str(input("Nom du fichier exporté : "))
@@ -127,7 +127,7 @@ class createNewPred() :
             s_source = str(input("train full dataset/id : "))
             n_source = api.get_dataset(f"{s_source}")
             splitTrain = float(input("valeur split train : "))
-            splitTest = float(input("valeur split test : "))
+            splitTest = float(1-splitTrain)
             train_dataset = api.create_dataset(n_source, {"name": "VarTraining", "sample_rate": splitTrain})
             test_dataset = api.create_dataset(n_source, {"name": "VarTest", "sample_rate": splitTest})
             mod = str(input("Model selectioné : "))
@@ -180,6 +180,7 @@ class analyserML() :
         ###### variable d'environement #########
         load_set_train = str(input("Id du fichier train : "))
         load_set_test = str(input("Id du fichier test : "))
+        objectifField = str(input("Nom du champs objectif : "))
         model_One = str(input("model 1 : "))
         model_two = str(input("model 2 : "))
         var = 0.1
@@ -198,7 +199,7 @@ class analyserML() :
             api.ok
 
             ###### Appel de la fonction create_"" #########
-            modvar = modelOperate(model_One,train_dataset)
+            modvar = modelOperate(model_One,train_dataset,objectifField)
 
             evaluation = api.create_evaluation(modvar,fileTest)
             api.ok(evaluation)
@@ -209,7 +210,7 @@ class analyserML() :
             tabley.append(auc)
 
             ###### Appel de la fonction create_"" #########
-            modvar = modelOperate(model_two,train_dataset)
+            modvar = modelOperate(model_two,train_dataset,objectifField)
 
             evaluation = api.create_evaluation(modvar,fileTest)
             api.ok(evaluation)
