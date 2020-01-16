@@ -4,8 +4,7 @@ from pandas import read_csv
 from biglearn import createNewPred as CP 
 from alys import regression as AR   
 # import ui
-   
-    
+
 
 ############## void start ##########################
 
