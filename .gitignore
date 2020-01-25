@@ -6,10 +6,8 @@ __pycache__/
 *.pyc
 *.json
 sec.py
-azure.py
 mypont.py
 uiDesign/
-Neuron.ipynb
 Class_sql.py
 TheMoviesPredicator_mysql_create.sql
-pondecrator.py
+MoviesPredicator.ows

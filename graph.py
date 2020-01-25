@@ -1,12 +1,15 @@
 '''Visual module for Data/Ia Dev Script -- Nicolas Autexier -- contact = nicolas.atx@gmx.fr '''
 
 from pandas import read_csv
-import matplotlib.pyplot as plt
 import sys
 import numpy as np
 import csv
 import os
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+# import plotly.graph_objs as go
+# import plotly.express as px
 
 class rViz():
 
@@ -23,6 +26,12 @@ class rViz():
         plt.ylabel(f"{labely}")
         plt.title(f"{labeltitle}")
         plt.draw()
+
+        # thisPlot = px.line(x=df[f"{x}"], y=df[f"{y}"])
+        # thisPlot.update_layout(title=f"{labeltitle}",
+        #                         xaxis_title=f"{labelx}",
+        #                         yaxis_title=f"{labely}",
+        #                         font=dict(family="Courier New, monospace",size=18, color="#78281F"))
 
     @staticmethod     
     def graph_double(x,y,y2):

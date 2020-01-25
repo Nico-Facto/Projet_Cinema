@@ -17,14 +17,18 @@ avec le contenu suivant :
         bigUseur = 'your_useur name'
         bigApiKey = 'Api key'
 
+Exécuter docker-compose build // depuis le dossier themoviepredicator
+Exécuter docker-compose up -d // depuis le dossier themoviepredicator
 
 Se connecter à la base de donées : http://localhost:8080/
 importer dans la base de donée le fichier : MoviesPredictorV2.sql
 
+python facto.py depuis le projet
 
-Exécuter docker-compose up -d depuis le dossier themoviepredicator
 
-python facto.py depuis le projet (cd.. depuis le dossier themoviepredicator)
+Utiliser le menu scraping pour agréer des données, il faut préparer une liste d' imdb ID dans un csv pour que le script de scraping y accede.
+utiliser le menu bdd pour intéragir avec elle. Vous pouvez rajouter des fonctionnalités au menus, voir le code source, il dispose de nombreuses fonctions.
+Les menus 1 / 2 / 3 permette d'intéragir avec BigMl, se documenter auprés du site ci nécessaire.
 
 -----   v0.02a :
 
