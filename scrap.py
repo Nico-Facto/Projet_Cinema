@@ -240,7 +240,7 @@ def scrapOnTarget():
     cnx=conectToDatabase()
     cursor =createCursor(cnx)
     
-    df = read_csv("Pred_Files/suivi_mod_janv.csv")
+    df = read_csv("Pred_Files/suivi_mod_fev.csv")
     print("Scrap vers Target")
 
     for newID in df["imdb_id"] :
